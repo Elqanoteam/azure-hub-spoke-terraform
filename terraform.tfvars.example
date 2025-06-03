@@ -1,0 +1,15 @@
+# Copy this file to terraform.tfvars and update the values below
+
+# The Azure region where all resources will be deployed
+# Must support availability zones
+location = "France Central"
+
+# Set to true to deploy sample virtual machines for testing
+deploy_virtual_machines = true
+
+# Set to true to deploy a VPN Gateway (adds significant deployment time)
+deploy_vpn_gateway = false
+
+# Admin credentials for the virtual machines (only required if deploy_virtual_machines = true)
+admin_username = "azureadmin"
+admin_password = "YourSecurePassword123!"  # Must meet Azure password complexity requirements 
