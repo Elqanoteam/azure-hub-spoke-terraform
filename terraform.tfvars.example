@@ -2,7 +2,7 @@
 
 # The Azure region where all resources will be deployed
 # Must support availability zones
-location = "France Central"
+location = "francecentral"
 
 # Set to true to deploy sample virtual machines for testing
 deploy_virtual_machines = true

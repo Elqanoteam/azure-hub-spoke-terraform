@@ -63,7 +63,7 @@ The configuration automatically creates a resource group with the naming pattern
 
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
-| `location` | Azure region (must support availability zones) | "France Central" | No |
+| `location` | Azure region (must support availability zones) | francecentral | No |
 | `deploy_virtual_machines` | Deploy sample VMs for testing | `true` | No |
 | `deploy_vpn_gateway` | Deploy VPN Gateway (adds ~30 min) | `false` | No |
 | `admin_username` | VM admin username | "azureadmin" | No |
@@ -72,7 +72,7 @@ The configuration automatically creates a resource group with the naming pattern
 ### Example terraform.tfvars
 
 ```hcl
-location = "France Central"
+location = "francecentral"
 deploy_virtual_machines = true
 deploy_vpn_gateway = false
 admin_username = "azureadmin"
@@ -131,17 +131,6 @@ All resources are configured to send diagnostic logs to the centralized Log Anal
 - Analyze resource performance metrics
 - Set up alerts and dashboards
 
-## Estimated Costs
-
-This deployment will incur costs for:
-- Azure Firewall (~$1.25/hour + data processing)
-- Azure Bastion (~$0.19/hour)
-- DDoS Protection Standard (~$2,944/month)
-- Virtual Machines (if deployed)
-- VPN Gateway (if deployed, ~$0.40/hour)
-- Log Analytics workspace (pay-per-GB)
-
-**Note**: DDoS Protection Standard has a significant monthly cost. Consider whether it's needed for your environment.
 
 ## Cleanup
 
@@ -179,26 +168,6 @@ To peer with existing virtual networks:
 2. Update route tables if needed
 3. Modify firewall rules for cross-network traffic
 
-## Troubleshooting
-
-### Common Issues
-
-1. **Location doesn't support availability zones**
-   - Choose a different location that supports AZs
-   - See [Azure regions with availability zones](https://docs.microsoft.com/en-us/azure/availability-zones/az-region)
-
-2. **Resource group not found**
-   - Ensure the resource group exists before running Terraform
-   - Update the data source if using a different naming pattern
-
-3. **VM password complexity**
-   - Ensure password meets Azure requirements
-   - 12+ characters with mix of uppercase, lowercase, numbers, and symbols
-
-4. **Firewall deployment timeout**
-   - Firewall deployment can take 10-15 minutes
-   - Check Azure portal for detailed deployment status
-
 ## Related Resources
 
 - [Microsoft Azure Hub-Spoke Reference Architecture](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hub-spoke)
@@ -206,6 +175,3 @@ To peer with existing virtual networks:
 - [Azure Firewall Documentation](https://docs.microsoft.com/en-us/azure/firewall/)
 - [Azure Bastion Documentation](https://docs.microsoft.com/en-us/azure/bastion/)
 
-## License
-
-This code is provided as-is for educational and demonstration purposes. 
