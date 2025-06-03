@@ -356,6 +356,33 @@ resource "azurerm_firewall_policy_rule_collection_group" "network_rules" {
       destination_addresses = ["*"]
       destination_ports     = ["53"]
     }
+
+    rule {
+      name                  = "HTTP"
+      description           = "Allow HTTP outbound"
+      protocols             = ["TCP"]
+      source_addresses      = ["10.100.0.0/24", "10.200.0.0/24"] # Both spoke subnets
+      destination_addresses = ["*"]
+      destination_ports     = ["80"]
+    }
+
+    rule {
+      name                  = "HTTPS"
+      description           = "Allow HTTPS outbound"
+      protocols             = ["TCP"]
+      source_addresses      = ["10.100.0.0/24", "10.200.0.0/24"] # Both spoke subnets
+      destination_addresses = ["*"]
+      destination_ports     = ["443"]
+    }
+
+    rule {
+      name                  = "NTP"
+      description           = "Allow NTP for time synchronization"
+      protocols             = ["UDP"]
+      source_addresses      = ["10.100.0.0/24", "10.200.0.0/24"] # Both spoke subnets
+      destination_addresses = ["*"]
+      destination_ports     = ["123"]
+    }
   }
 }
 
@@ -366,11 +393,32 @@ resource "azurerm_firewall_policy_rule_collection_group" "application_rules" {
   priority           = 300
   depends_on         = [azurerm_firewall_policy_rule_collection_group.network_rules]
 
+  application_rule_collection {
+    name     = "general-internet-access"
+    priority = 100
+    action   = "Allow"
+
+    rule {
+      name        = "AllowGeneralWebAccess"
+      description = "Allow general web access for both VMs"
+      source_addresses = ["10.100.0.0/24", "10.200.0.0/24"] # Both spoke subnets
+      destination_fqdns = ["*"]
+      protocols {
+        type = "Http"
+        port = 80
+      }
+      protocols {
+        type = "Https"
+        port = 443
+      }
+    }
+  }
+
   dynamic "application_rule_collection" {
     for_each = var.deploy_virtual_machines ? [1] : []
     content {
-      name     = "org-wide-allowed"
-      priority = 100
+      name     = "vm-specific-access"
+      priority = 200
       action   = "Allow"
 
       rule {
