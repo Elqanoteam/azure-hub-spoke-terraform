@@ -18,14 +18,9 @@ output "hub_virtual_network_id" {
   value       = azurerm_virtual_network.hub.id
 }
 
-output "spoke_one_virtual_network_id" {
-  description = "The ID of spoke one virtual network"
-  value       = azurerm_virtual_network.spoke_one.id
-}
-
-output "spoke_two_virtual_network_id" {
-  description = "The ID of spoke two virtual network"
-  value       = azurerm_virtual_network.spoke_two.id
+output "app_spoke_virtual_network_id" {
+  description = "The ID of the app spoke virtual network"
+  value       = azurerm_virtual_network.app_spoke.id
 }
 
 output "azure_firewall_id" {
@@ -38,27 +33,22 @@ output "azure_firewall_private_ip" {
   value       = azurerm_firewall.hub.ip_configuration[0].private_ip_address
 }
 
-output "azure_bastion_id" {
-  description = "The ID of the Azure Bastion"
-  value       = azurerm_bastion_host.hub.id
-}
-
-output "linux_vm_id" {
-  description = "The ID of the Linux virtual machine (if deployed)"
-  value       = var.deploy_virtual_machines ? azurerm_linux_virtual_machine.spoke_one_linux[0].id : null
-}
-
 output "windows_vm_id" {
   description = "The ID of the Windows virtual machine (if deployed)"
-  value       = var.deploy_virtual_machines ? azurerm_windows_virtual_machine.spoke_two_windows[0].id : null
+  value       = var.deploy_virtual_machines ? azurerm_windows_virtual_machine.windows_vm[0].id : null
 }
 
-output "bastion_host_fqdn" {
-  description = "The FQDN of the Bastion Host"
-  value       = azurerm_bastion_host.hub.dns_name
+output "windows_vm_public_ip" {
+  description = "The public IP address of the Windows virtual machine (if deployed)"
+  value       = var.deploy_virtual_machines ? azurerm_public_ip.windows_vm[0].ip_address : null
 }
 
 output "firewall_policy_id" {
   description = "The ID of the Azure Firewall Policy"
   value       = azurerm_firewall_policy.main.id
+}
+
+output "route_table_id" {
+  description = "The ID of the route table"
+  value       = azurerm_route_table.to_firewall.id
 } 
